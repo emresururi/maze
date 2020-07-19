@@ -12,16 +12,17 @@ class eMaze(df_maze.Maze):
         "Updates the state wall of the cell at x,y"
         "and its neighbour"
         delta = {"N":(0,-1),"S":(0,1),"W":(-1,0),"E":(1,0)}
-        opposite = {"N":"S","S":"N","E":"w","W":"E"}
+        opposite = {"N":"S","S":"N","E":"W","W":"E"}
         this_cell = self.cell_at(x,y)
-        print(this_cell.walls)
-        print(self.nx,self.ny)
-        this_cell.walls[wall_dir]=state
+        #print(this_cell.walls)
+        #print(self.nx,self.ny)
+
         neigh_x,neigh_y = np.array(delta[wall_dir])+np.array([x,y])
-        print(neigh_x,neigh_y)
+        #print(neigh_x,neigh_y)
         if(neigh_x>=0 and neigh_x<self.nx and neigh_y>=0 and neigh_y<self.ny):
             self.cell_at(neigh_x,neigh_y).walls[opposite[wall_dir]]=state
-        print(this_cell.walls)
+            this_cell.walls[wall_dir] = state
+        #print(this_cell.walls)
     def solve_from_to(self,x0y0,x1y1):
         # Solves the path from (x0,y0) to (x1,y1)
         # using cellular automata.

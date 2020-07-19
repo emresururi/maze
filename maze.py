@@ -2,7 +2,7 @@ from eMaze import *
 import pygame as pg
 import copy
 
-n_x = n_y = 20
+n_x = n_y = 10
 #n_x = 50
 i_x = random.randint(0,n_x-1)
 i_y = random.randint(0,n_y-1)
@@ -26,7 +26,7 @@ pg.display.set_caption("Eceeeeeeee!")
 surface_maze = pg.Surface((res_x,res_y))
 color_wall = 'purple'
 thickness_wall = 3
-pg.draw.rect(surface_maze,color_wall,[0,0,res_x,res_y],thickness_wall)
+pg.draw.rect(surface_maze,color_wall,[0,0,res_x,res_y],thickness_wall+5)
 for x in range(n_x):
     for y in range(n_y):
         walls = maze.cell_at(x,y).walls
@@ -46,8 +46,8 @@ bego=pg.transform.scale(bego,(int(scale_x),int(scale_y)))
 est_x = n_x - 3
 est_y = 1
 
-bego_x = 2
-bego_y = 3
+bego_x = 1
+bego_y = n_y - 3
 
 disp.blit(surface_maze,(0,0))
 disp.blit(est,(est_x*scale_x,est_y*scale_y))
@@ -75,14 +75,34 @@ while not flag_break:
     if event.type == pg.QUIT:
         flag_break = True
     if event.type == pg.KEYDOWN:
-        if event.key == pg.K_LEFT and not maze.cell_at(ece_x,ece_y).walls['W']:
-            ece_x -= 1
-        elif event.key == pg.K_RIGHT and not maze.cell_at(ece_x,ece_y).walls['E']:
-            ece_x += 1
-        elif event.key == pg.K_UP and not maze.cell_at(ece_x,ece_y).walls['N']:
-            ece_y -= 1
-        elif event.key == pg.K_DOWN and not maze.cell_at(ece_x,ece_y).walls['S']:
-            ece_y += 1
+        if event.key == pg.K_LEFT:
+            if not maze.cell_at(ece_x,ece_y).walls['W']:
+                ece_x -= 1
+            else:
+                pg.draw.line(surface_maze, 'red', [(ece_x) * scale_x, (ece_y) * scale_y],
+                             [(ece_x) * scale_x, (ece_y + 1) * scale_y], thickness_wall)
+                maze.update_wall(ece_x, ece_y, 'W', False)
+        elif event.key == pg.K_RIGHT:
+            if not maze.cell_at(ece_x,ece_y).walls['E']:
+                ece_x += 1
+            else:
+                pg.draw.line(surface_maze, 'red', [(ece_x + 1) * scale_x, (ece_y) * scale_y],
+                             [(ece_x + 1) * scale_x, (ece_y + 1) * scale_y], thickness_wall)
+                maze.update_wall(ece_x,ece_y,'E',False)
+        elif event.key == pg.K_UP:
+            if not maze.cell_at(ece_x,ece_y).walls['N']:
+                ece_y -= 1
+            else:
+                pg.draw.line(surface_maze, 'red', [(ece_x) * scale_x, (ece_y) * scale_y],
+                 [(ece_x+1) * scale_x, (ece_y) * scale_y], thickness_wall)
+                maze.update_wall(ece_x, ece_y, 'N', False)
+        elif event.key == pg.K_DOWN:
+            if not maze.cell_at(ece_x,ece_y).walls['S']:
+                ece_y += 1
+            else:
+                pg.draw.line(surface_maze, 'red', [(ece_x) * scale_x, (ece_y+1) * scale_y],
+                 [(ece_x+1) * scale_x, (ece_y+1) * scale_y], thickness_wall)
+                maze.update_wall(ece_x, ece_y, 'S', False)
 
         disp.blit(surface_maze,(0,0))
 
