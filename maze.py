@@ -21,7 +21,7 @@ scale_x = res_x / n_x
 scale_y = res_y / n_y
 
 disp = pg.display.set_mode((res_x, res_y))
-pg.display.set_caption("Eceeeeeeee!")
+pg.display.set_caption("MAZE!")
 # Prepare the maze surface --- 0 ---
 surface_maze = pg.Surface((res_x,res_y))
 color_wall = 'purple'
@@ -36,35 +36,35 @@ for x in range(n_x):
             pg.draw.line(surface_maze,color_wall,[(x+1)*scale_x,(y)*scale_y],[(x+1)*scale_x,(y+1)*scale_y],thickness_wall)
 # Prepare the maze surface --- 1 ---
 
-est = pg.image.load("img/est.png")
-ece = pg.image.load("img/ece.png")
-bego = pg.image.load("img/bengu.png")
-est=pg.transform.scale(est,(int(scale_x),int(scale_y)))
-ece=pg.transform.scale(ece,(int(scale_x),int(scale_y)))
-bego=pg.transform.scale(bego,(int(scale_x),int(scale_y)))
+gate = pg.image.load("img/gate.png")
+wanderer = pg.image.load("img/wanderer.png")
+pathfinder = pg.image.load("img/pathfinder.png")
+gate=pg.transform.scale(gate,(int(scale_x),int(scale_y)))
+wanderer=pg.transform.scale(wanderer,(int(scale_x),int(scale_y)))
+pathfinder=pg.transform.scale(pathfinder,(int(scale_x),int(scale_y)))
 
-est_x = n_x - 3
-est_y = 1
+gate_x = n_x - 3
+gate_y = 1
 
-bego_x = 1
-bego_y = n_y - 3
+pathfinder_x = 1
+pathfinder_y = n_y - 3
 
 disp.blit(surface_maze,(0,0))
-disp.blit(est,(est_x*scale_x,est_y*scale_y))
-disp.blit(bego,(bego_x*scale_x,bego_y*scale_y))
+disp.blit(gate,(gate_x*scale_x,gate_y*scale_y))
+disp.blit(pathfinder,(pathfinder_x*scale_x,pathfinder_y*scale_y))
 
-ece_x = i_x
-ece_y = i_y
+wanderer_x = i_x
+wanderer_y = i_y
 
-disp.blit(ece,(ece_x*scale_x,ece_y*scale_y))
+disp.blit(wanderer,(wanderer_x*scale_x,wanderer_y*scale_y))
 pg.display.flip()
-path_from_bego_to_est  = maze.solve_from_to((bego_x,bego_y),(est_x,est_y))
+path_from_pathfinder_to_gate  = maze.solve_from_to((pathfinder_x,pathfinder_y),(gate_x,gate_y))
 
 surface_b2e = pg.Surface((res_x,res_y),pg.SRCALPHA,32)
-path_from_bego_to_est_scaled = copy.deepcopy(path_from_bego_to_est)
-path_from_bego_to_est_scaled[:,0] = path_from_bego_to_est_scaled[:,0]*scale_x+scale_x/2
-path_from_bego_to_est_scaled[:,1] = path_from_bego_to_est_scaled[:,1]*scale_y+scale_y/2
-pg.draw.lines(surface_b2e,'yellow',False,path_from_bego_to_est_scaled)
+path_from_pathfinder_to_gate_scaled = copy.deepcopy(path_from_pathfinder_to_gate)
+path_from_pathfinder_to_gate_scaled[:,0] = path_from_pathfinder_to_gate_scaled[:,0]*scale_x+scale_x/2
+path_from_pathfinder_to_gate_scaled[:,1] = path_from_pathfinder_to_gate_scaled[:,1]*scale_y+scale_y/2
+pg.draw.lines(surface_b2e,'yellow',False,path_from_pathfinder_to_gate_scaled)
 
 
 flag_break = False
@@ -76,43 +76,43 @@ while not flag_break:
         flag_break = True
     if event.type == pg.KEYDOWN:
         if event.key == pg.K_LEFT:
-            if not maze.cell_at(ece_x,ece_y).walls['W']:
-                ece_x -= 1
+            if not maze.cell_at(wanderer_x,wanderer_y).walls['W']:
+                wanderer_x -= 1
             else:
-                pg.draw.line(surface_maze, 'red', [(ece_x) * scale_x, (ece_y) * scale_y],
-                             [(ece_x) * scale_x, (ece_y + 1) * scale_y], thickness_wall)
-                maze.update_wall(ece_x, ece_y, 'W', False)
+                pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y) * scale_y],
+                             [(wanderer_x) * scale_x, (wanderer_y + 1) * scale_y], thickness_wall)
+                maze.update_wall(wanderer_x, wanderer_y, 'W', False)
         elif event.key == pg.K_RIGHT:
-            if not maze.cell_at(ece_x,ece_y).walls['E']:
-                ece_x += 1
+            if not maze.cell_at(wanderer_x,wanderer_y).walls['E']:
+                wanderer_x += 1
             else:
-                pg.draw.line(surface_maze, 'red', [(ece_x + 1) * scale_x, (ece_y) * scale_y],
-                             [(ece_x + 1) * scale_x, (ece_y + 1) * scale_y], thickness_wall)
-                maze.update_wall(ece_x,ece_y,'E',False)
+                pg.draw.line(surface_maze, 'red', [(wanderer_x + 1) * scale_x, (wanderer_y) * scale_y],
+                             [(wanderer_x + 1) * scale_x, (wanderer_y + 1) * scale_y], thickness_wall)
+                maze.update_wall(wanderer_x,wanderer_y,'E',False)
         elif event.key == pg.K_UP:
-            if not maze.cell_at(ece_x,ece_y).walls['N']:
-                ece_y -= 1
+            if not maze.cell_at(wanderer_x,wanderer_y).walls['N']:
+                wanderer_y -= 1
             else:
-                pg.draw.line(surface_maze, 'red', [(ece_x) * scale_x, (ece_y) * scale_y],
-                 [(ece_x+1) * scale_x, (ece_y) * scale_y], thickness_wall)
-                maze.update_wall(ece_x, ece_y, 'N', False)
+                pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y) * scale_y],
+                 [(wanderer_x+1) * scale_x, (wanderer_y) * scale_y], thickness_wall)
+                maze.update_wall(wanderer_x, wanderer_y, 'N', False)
         elif event.key == pg.K_DOWN:
-            if not maze.cell_at(ece_x,ece_y).walls['S']:
-                ece_y += 1
+            if not maze.cell_at(wanderer_x,wanderer_y).walls['S']:
+                wanderer_y += 1
             else:
-                pg.draw.line(surface_maze, 'red', [(ece_x) * scale_x, (ece_y+1) * scale_y],
-                 [(ece_x+1) * scale_x, (ece_y+1) * scale_y], thickness_wall)
-                maze.update_wall(ece_x, ece_y, 'S', False)
+                pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y+1) * scale_y],
+                 [(wanderer_x+1) * scale_x, (wanderer_y+1) * scale_y], thickness_wall)
+                maze.update_wall(wanderer_x, wanderer_y, 'S', False)
 
         disp.blit(surface_maze,(0,0))
 
-        if(bego_x!=est_x or bego_y!=est_y):
-            bego_x = path_from_bego_to_est[step][0]
-            bego_y = path_from_bego_to_est[step][1]
+        if(pathfinder_x!=gate_x or pathfinder_y!=gate_y):
+            pathfinder_x = path_from_pathfinder_to_gate[step][0]
+            pathfinder_y = path_from_pathfinder_to_gate[step][1]
         disp.blit(surface_b2e,(0,0))
-        disp.blit(est, (est_x * scale_x, est_y * scale_y))
-        disp.blit(bego,(bego_x*scale_x,bego_y*scale_y))
-        disp.blit(ece,(ece_x*scale_x,ece_y*scale_y))
+        disp.blit(gate, (gate_x * scale_x, gate_y * scale_y))
+        disp.blit(pathfinder,(pathfinder_x*scale_x,pathfinder_y*scale_y))
+        disp.blit(wanderer,(wanderer_x*scale_x,wanderer_y*scale_y))
         pg.display.flip()
         step += 1
 
