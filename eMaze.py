@@ -24,6 +24,7 @@ class eMaze(df_maze.Maze):
             this_cell.walls[wall_dir] = state
         #print(this_cell.walls)
     def solve_from_to(self,x0y0,x1y1):
+        # TODO: The algorithm doesn't work with open areas
         # Solves the path from (x0,y0) to (x1,y1)
         # using cellular automata.
         # Returns the steps' coordinates

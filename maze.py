@@ -103,6 +103,18 @@ while not flag_break:
                 pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y+1) * scale_y],
                  [(wanderer_x+1) * scale_x, (wanderer_y+1) * scale_y], thickness_wall)
                 maze.update_wall(wanderer_x, wanderer_y, 'S', False)
+        elif event.key == pg.K_r and pathfinder_x!=gate_x and pathfinder_y!=gate_y:
+            # Re-calculate the path (include broken walls, if any)
+            path_from_pathfinder_to_gate = maze.solve_from_to((pathfinder_x, pathfinder_y), (gate_x, gate_y))
+
+            surface_b2e = pg.Surface((res_x, res_y), pg.SRCALPHA, 32)
+            path_from_pathfinder_to_gate_scaled = copy.deepcopy(path_from_pathfinder_to_gate)
+            path_from_pathfinder_to_gate_scaled[:, 0] = path_from_pathfinder_to_gate_scaled[:,
+                                                        0] * scale_x + scale_x / 2
+            path_from_pathfinder_to_gate_scaled[:, 1] = path_from_pathfinder_to_gate_scaled[:,
+                                                        1] * scale_y + scale_y / 2
+            pg.draw.lines(surface_b2e, 'yellow', False, path_from_pathfinder_to_gate_scaled)
+            step = 0
 
         disp.blit(surface_maze,(0,0))
 
