@@ -9,7 +9,7 @@ i_y = random.randint(0,n_y-1)
 
 maze = eMaze(n_x, n_y, i_x, i_y)
 maze.make_maze()
-maze.write_svg("/etmp/map.svg")
+maze.write_svg("map.svg")
 
 pg.init()
 clock = pg.time.Clock()
@@ -17,14 +17,14 @@ clock.tick(30)
 
 res_x = res_y = 480
 res_y = int(res_x * n_y / n_x)
-scale_x = res_x / n_x
-scale_y = res_y / n_y
+scale_x = int(res_x / n_x)
+scale_y = int(res_y / n_y)
 
 disp = pg.display.set_mode((res_x, res_y))
 pg.display.set_caption("MAZE!")
 # Prepare the maze surface --- 0 ---
 surface_maze = pg.Surface((res_x,res_y))
-color_wall = 'purple'
+color_wall = pg.Color('purple')
 thickness_wall = 3
 pg.draw.rect(surface_maze,color_wall,[0,0,res_x,res_y],thickness_wall+5)
 for x in range(n_x):
@@ -64,7 +64,7 @@ surface_b2e = pg.Surface((res_x,res_y),pg.SRCALPHA,32)
 path_from_pathfinder_to_gate_scaled = copy.deepcopy(path_from_pathfinder_to_gate)
 path_from_pathfinder_to_gate_scaled[:,0] = path_from_pathfinder_to_gate_scaled[:,0]*scale_x+scale_x/2
 path_from_pathfinder_to_gate_scaled[:,1] = path_from_pathfinder_to_gate_scaled[:,1]*scale_y+scale_y/2
-pg.draw.lines(surface_b2e,'yellow',False,path_from_pathfinder_to_gate_scaled)
+pg.draw.lines(surface_b2e,pg.Color('yellow'),False,path_from_pathfinder_to_gate_scaled)
 
 
 flag_break = False
@@ -79,28 +79,28 @@ while not flag_break:
             if not maze.cell_at(wanderer_x,wanderer_y).walls['W']:
                 wanderer_x -= 1
             else:
-                pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y) * scale_y],
+                pg.draw.line(surface_maze, pg.Color('red'), [(wanderer_x) * scale_x, (wanderer_y) * scale_y],
                              [(wanderer_x) * scale_x, (wanderer_y + 1) * scale_y], thickness_wall)
                 maze.update_wall(wanderer_x, wanderer_y, 'W', False)
         elif event.key == pg.K_RIGHT:
             if not maze.cell_at(wanderer_x,wanderer_y).walls['E']:
                 wanderer_x += 1
             else:
-                pg.draw.line(surface_maze, 'red', [(wanderer_x + 1) * scale_x, (wanderer_y) * scale_y],
+                pg.draw.line(surface_maze, pg.Color('red'), [(wanderer_x + 1) * scale_x, (wanderer_y) * scale_y],
                              [(wanderer_x + 1) * scale_x, (wanderer_y + 1) * scale_y], thickness_wall)
                 maze.update_wall(wanderer_x,wanderer_y,'E',False)
         elif event.key == pg.K_UP:
             if not maze.cell_at(wanderer_x,wanderer_y).walls['N']:
                 wanderer_y -= 1
             else:
-                pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y) * scale_y],
+                pg.draw.line(surface_maze, pg.Color('red'), [(wanderer_x) * scale_x, (wanderer_y) * scale_y],
                  [(wanderer_x+1) * scale_x, (wanderer_y) * scale_y], thickness_wall)
                 maze.update_wall(wanderer_x, wanderer_y, 'N', False)
         elif event.key == pg.K_DOWN:
             if not maze.cell_at(wanderer_x,wanderer_y).walls['S']:
                 wanderer_y += 1
             else:
-                pg.draw.line(surface_maze, 'red', [(wanderer_x) * scale_x, (wanderer_y+1) * scale_y],
+                pg.draw.line(surface_maze, pg.Color('red'), [(wanderer_x) * scale_x, (wanderer_y+1) * scale_y],
                  [(wanderer_x+1) * scale_x, (wanderer_y+1) * scale_y], thickness_wall)
                 maze.update_wall(wanderer_x, wanderer_y, 'S', False)
         elif event.key == pg.K_r and pathfinder_x!=gate_x and pathfinder_y!=gate_y:
@@ -113,7 +113,7 @@ while not flag_break:
                                                         0] * scale_x + scale_x / 2
             path_from_pathfinder_to_gate_scaled[:, 1] = path_from_pathfinder_to_gate_scaled[:,
                                                         1] * scale_y + scale_y / 2
-            pg.draw.lines(surface_b2e, 'yellow', False, path_from_pathfinder_to_gate_scaled)
+            pg.draw.lines(surface_b2e, pg.Color('yellow'), False, path_from_pathfinder_to_gate_scaled)
             step = 0
 
         disp.blit(surface_maze,(0,0))
